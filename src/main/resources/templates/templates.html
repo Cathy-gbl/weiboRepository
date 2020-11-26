@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="tital" th:text="${tital}"></title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet"
+          href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+</head>
+<body>
+<div>
+    <div class="title" th:text="${tital}"></div>
+    <div class="body">
+        <div class="content" th:text="${content}"></div>
+        <div class="username" th:text="${username}"></div>
+        <div class="createDate" th:text="${createDate}"></div>
+    </div>
+    <div class="comments" th:each="contents, commentsStat:${comments}">
+        <div>
+            <span th:text="${commentsStat.index}"></span>
+            <span th:text="${contents.content}"></span><br>
+            <span th:text="${contents.username}"></span>
+            <span th:text="${contents.createDate}"></span><br>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+</script>
+</html>

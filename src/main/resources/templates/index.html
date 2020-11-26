@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>微博首页</title>
+        <link rel="stylesheet" href="../styles/index.css">
+        <link rel="stylesheet" href="../styles/main.css">
+        <link rel="stylesheet"
+            href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    </head>
+
+    <body>
+        <div class="bg">
+            <div class="navigation">
+                <div class="navigation_parent">
+                    <div class="navigation_left">
+                        <div class="navigation_left_sign"></div>
+                        <div class="navigation_left_search">
+                            <span class="search_span"></span>
+                            <input class="search_input" type="text">
+                            <a class="search_a"  onclick="getHotContentByLike()">
+                                <i class="fa fa-search fa-2x"></i>
+                            </a>
+                            <div class="search_more">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navigation_right">
+                        <div class="navigation_right_parent">
+                            <div class="title">
+                                <div class="icon"></div>
+                                <i class="fa fa-home fa-2x"></i> 首页
+                            </div>
+<!--                            <div class="title">-->
+<!--                                <div class="icon"></div>-->
+<!--                                <i class="fa fa-video-camera fa-2x"-->
+<!--                                    aria-hidden="true"></i> 视频-->
+<!--                            </div>-->
+<!--                            <div class="title">-->
+<!--                                <div class="icon"></div>-->
+<!--                                <i class="fa fa-bandcamp fa-2x"-->
+<!--                                    aria-hidden="true"></i> 发现-->
+<!--                            </div>-->
+<!--                            <div class="title">-->
+<!--                                <div class="icon"></div>-->
+<!--                                <i class="fa fa-gamepad fa-2x"-->
+<!--                                    aria-hidden="true"></i> 游戏-->
+<!--                            </div>-->
+<!--                            <div class="navigation_right_log">-->
+<!--                                <div style="cursor: pointer;">注册</div>-->
+<!--                                <div>|</div>-->
+<!--                                <div style="cursor: pointer;">登录</div>-->
+<!--                            </div>-->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="main">
+            <div class="main_left_parent">
+                <div class="main_left">
+                    <div class="checked">热门</div>
+                    <div>头条</div>
+                    <div>视频</div>
+                    <div>榜单</div>
+                    <div>搞笑</div>
+<!--                    <div>社会</div>-->
+<!--                    <div>时尚</div>-->
+<!--                    <div>电影</div>-->
+<!--                    <div>美女</div>-->
+<!--                    <div>体育</div>-->
+<!--                    <div>动漫</div>-->
+                </div>
+            </div>
+
+
+            <div class="main_passage">
+                <div class="main_passage_img">
+                    <div class="left">
+                        <!-- <img src="./image/left/2.jpg" alt=""> -->
+                    </div>
+                    <div class="top">
+                        <img
+                            src="./image/weibo/60718250ly1ghmlp0e82qj20c80c8754.jpg"
+                            alt="">
+                    </div>
+                    <div class="bottom">
+                        <img
+                            src="./image/weibo/60718250ly1ghmlp0e82qj20c80c8754.jpg"
+                            alt="">
+                    </div>
+                </div>
+                <div class="main_list">
+                    <!-- <img src="./image/main.png" alt=""> -->
+                    <div class="main_list_msg">
+<!--                        <div class="pic">-->
+<!--                            <img src="./image/hj.gif" alt="">-->
+<!--                        </div>-->
+                        <div id="hotContentXq">
+<!--                            <span ></span>-->
+                        </div>
+                        <div class="msg_box"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="main_right">
+                <div class="log-box">
+                    <div class="log_parent">
+                        <form action="" method="post">
+                            <div class="log">
+                                <div class="log_head">
+                                    <div class="log_id">账号登录</div>
+                                    <div class="log_safe">安全登录</div>
+                                </div>
+                                <div class="log_body">
+                                    <div class="username">
+                                        <input type="text" class="input">
+                                    </div>
+                                    <div class="password">
+                                        <input type="password" class="input">
+                                    </div>
+                                    <div class="passwd">
+                                        <div class="passwd_remmenber">
+                                            <input type="checkbox"
+                                                class="passwd_remmenber_check"><span>记住我</span>
+                                        </div>
+                                        <div class="passwd_forget">
+                                            <span>忘记密码</span>
+                                        </div>
+                                    </div>
+                                    <div class="log_submit">
+                                        <span>登录</span>
+                                    </div>
+                                </div>
+                                <div class="log_foot">
+                                    <div class="notid">
+                                        <span>还没有微博？</span>
+                                        <a href="">立即注册！</a>
+                                    </div>
+                                    <div class="otherlog">
+                                        <span class="other_log">其他登录:</span>
+                                        <div class="other_log">
+                                            <a href="" class="other_log_tb"></a>
+                                            <a href="" class="other_log_qq"></a>
+                                            <a href="" class="other_log_yd"></a>
+                                            <a href="" class="other_log_ty"></a>
+                                            <a href="" class="other_log_360"></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="rank">
+                    <div class="rank_title">微博热门话题</div>
+                    <!-- <div><img src="./image/rank.png" alt=""></div> -->
+<!--                    <div>-->
+<!--                        <div class="rank_pic"></div>-->
+<!--                        <a href="">#华为发布会#</a>-->
+<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <div class="rank_pic"></div>-->
+<!--                        <a href="">#华为发布会#</a>-->
+<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <div class="rank_pic"></div>-->
+<!--                        <a href="">#华为发布会#</a>-->
+<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <div class="rank_pic"></div>-->
+<!--                        <a href="">#华为发布会#</a>-->
+<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <div class="rank_pic"></div>-->
+<!--                        <a href="">#华为发布会#</a>-->
+<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
+<!--                    </div>-->
+<!--                    <div class="rank_more">查看更多></div>-->
+                </div>
+                <div class="rank">
+                    <div class="rank_title" id="rank_title">微博实时热点</div>
+                    <!-- <div><img src="./image/rank.png" alt=""></div> -->
+<!--                    <div>-->
+<!--                        <div class="rank_hot_pic"></div>-->
+<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
+<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <div class="rank_hot_pic"></div>-->
+<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
+<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
+<!--                    </div><div>-->
+<!--                        <div class="rank_hot_pic"></div>-->
+<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
+<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
+<!--                    </div><div>-->
+<!--                        <div class="rank_hot_pic"></div>-->
+<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
+<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
+<!--                    </div><div>-->
+<!--                        <div class="rank_hot_pic"></div>-->
+<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
+<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
+<!--                    </div>-->
+<!--                    <div class="rank_more">查看更多></div>-->
+                </div>
+            </div>
+        </div>
+        <div class="gotop fixed">
+            <a class="gotop_a" href="#top" target="_self"></a>
+        </div>
+        <div class="reload fixed">
+            <a class="reroud_a" href="javascript:location.reload();"></a>
+        </div>
+    </body>
+
+    <script src="js/jquery-1.11.1.min.js"></script>
+
+    <script>
+
+        var ice = "http://localhost:8080/";
+        $(function(){
+            getHotContent();
+        });
+
+        /**
+         * 查询全部的热点信息
+         */
+        function getHotContent() {
+            $.ajax({
+                url: ice+"common/getHotContent",
+                async: true,
+                type:"post",
+                dataType:"json",
+                success: function(result){
+                    if(result.code == 200){
+                        let resultdata = result.data;
+                        let spanHtml = "";
+                        let resultHtml = "";
+                        let rankTitleHtml = "";
+                        let rankTitleIdHtml = "";
+                        resultdata.length = resultdata.length < 5 ? resultdata.length : 4;
+                        for (let i = 0; i < resultdata.length; i++) {
+                            resultHtml += "<a href="+resultdata[i].number+">"+resultdata[i].tital+"</a>";
+                            spanHtml += "<div><h2><a href='/common/hotContentXq?params="+resultdata[i].number+"'>"+resultdata[i].tital+"</a></h2></div>";
+                            rankTitleHtml += "<div><div class='rank_pic'></div>"+
+                                "<a href='/common/hotContentXq?params="+resultdata[i].number+"'>#"+resultdata[i].tital.substring(0,4)+"#</a>"+
+                                "<div class='rank_txt'>"+resultdata[i].tital+"</div>"+
+                            "</div>";
+                            rankTitleIdHtml += "<div>"+
+                                "<div class='rank_hot_pic'></div>"+
+                                "<a href='/common/hotContentXq?params="+resultdata[i].number+"'>#"+resultdata[i].tital.substring(0,6)+"#</a>"+
+                                "<div class='rank_txt'>"+resultdata[i].tital+"</div>"+
+                            "</div>";
+                        }
+                        // rankTitleHtml+="<div class='rank_more'>查看更多></div>";
+                        // rankTitleIdHtml+="<div class='rank_more'>查看更多></div>";
+                        $(".search_more").html(resultHtml);
+                        $("#hotContentXq").html(spanHtml);
+                        $(".rank_title").html(rankTitleHtml);
+                        $("#rank_title").html(rankTitleIdHtml);
+                    }
+                }});
+        }
+
+        /**
+         * 模糊搜素热点信息
+         */
+        function getHotContentByLike() {
+            let hotContent = $(".search_input").val();
+            $.ajax({
+                url: ice+"common/getHotContentByLike",
+                async: true,
+                contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                type:"post",
+                dataType:"json",
+                data: {
+                    hotContent : hotContent
+                },
+                success: function(result){
+                    console.log(result)
+                    if(result.code == 200){
+                        let resultdata = result.data;
+                        let spanHtml = "";
+                        let resultHtml = "";
+                        for (let i = 0; i < resultdata.length; i++) {
+                            resultHtml += "<a href="+resultdata[i].number+">"+resultdata[i].tital+"</a>";
+                            console.log(resultHtml)
+                            spanHtml += "<div><a href='/common/hotContentXq?params="+resultdata[i].number+"'>"+resultdata[i].tital+"</a></div>";
+                        }
+                        $(".search_more").html(resultHtml);
+                        $("#hotContentXq").html(spanHtml);
+                    }
+                }});
+        }
+
+    </script>
+    <style>
+        #hotContentXq a {
+            font-size: 14px;
+            color: black;
+            text-decoration: none;
+            line-height: 1.5;
+        }
+    </style>
+</html>
