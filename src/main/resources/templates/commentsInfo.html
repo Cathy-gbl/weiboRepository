@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+    <title>评论信息维护</title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet"
+          href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script type="text/javascript"   th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="main">
+    <div class="main_left_parent">
+        <div class="main_left1">
+            <input type="hidden" th:value="${loginname}" id="loginname">
+            <!--            <div th:each="contents, commentsStat:${comments}"></div>-->
+            <table class="table table-striped" style="margin:auto;">
+                <thead>
+                <tr>
+                    <td width='40px'>序号</td>
+                    <td width='100px'>标题</td>
+                    <td width='100px'>评论内容</td>
+                    <td width='40px'>评论人</td>
+                    <td width='150px'>评论时间</td>
+                    <td width='120px'>操作</td>
+                </tr>
+                </thead>
+                <tbody id="commentsTbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+    var ice = "http://localhost:8080/";
+    $(function(){
+        getCommentsInfoByLoginName();
+    });
+
+    function queryWeibo(numbers){
+        window.location.href=ice+"common/hotContentXq?params="+numbers;
+    }
+
+    function deletwComments(numbers){
+
+        $.ajax({
+            url: ice+"comments/delete?number="+numbers,
+            async: true,
+            type:"get",
+            dataType:"json",
+            success: function(result){
+                if(result.code == 200){
+                    alert("删除成功！");
+                    getCommentsInfoByLoginName();
+                }else{
+                    alert(result.msg);
+                }
+            }});
+    }
+
+    function getCommentsInfoByLoginName() {
+        let loginname = $("#loginname").val();
+        $.ajax({
+            url: ice+"comments/getCommentsInfoByLoginName",
+            async: true,
+            type:"post",
+            dataType:"json",
+            data:{
+                loginname : loginname
+            },
+            success: function(result){
+                if(result.code == 200){
+                    let results = result.data;
+                    console.log(results);
+                    let tableHtml = "";
+                    for (let i = 0; i < results.length; i++) {
+                        let date = new Date(results[i].commentTime);
+                        let resultNumber = results[i].number;
+                        tableHtml += "<tr>" +
+                            "<td>"+(i+1)+"</td>" +
+                            "<td><a href='/common/hotContentXq?params="+resultNumber+"'>"+results[i].tital.substring(0,10)+"</a></td>" +
+                            "<td>"+results[i].content.substring(0,6)+"</td>"+
+                            "<td>"+results[i].username+"</td>" +
+                            "<td>"+date.Format('yyyy-MM-dd hh:mm:ss')+"</td>" +
+                            "<td>" +
+                            "<button class='btn btn-default' onclick=\"queryWeibo('"+resultNumber+"')\">查看</button>\n" +
+                            "<button class='btn btn-default' onclick=\"deletwComments('"+results[i].id+"')\">删除</button>" +
+                            // "<a href='/weibo/deleteWeibo?params="+results[i].number+"'></a>" +
+                            "</td>" +
+                            "</tr>"
+                    }
+                    $("#commentsTbody").html(tableHtml);
+                }
+            }});
+    }
+
+    Date.prototype.Format = function (fmt) { // author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, // 月份
+            "d+": this.getDate(), // 日
+            "h+": this.getHours(), // 小时
+            "m+": this.getMinutes(), // 分
+            "s+": this.getSeconds(), // 秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+            "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+</script>
+<style>
+    .main_left1 {
+        /* background-color: red; */
+        width: 100%;
+        height: 470px;
+        font-size: 18px;
+        position: fixed;
+        top: 67px;
+    }
+</style>
+</html>

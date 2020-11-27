@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+    <title>微博首页</title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet"
+          href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+             th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script type="text/javascript"   th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="bg">
+    <div class="navigation">
+        <div class="navigation_parent">
+            <div class="navigation_left">
+                <div class="navigation_left_sign"></div>
+                <div class="navigation_left_search">
+                    <span class="search_span"></span>
+                    <input class="search_input" type="text">
+                    <a class="search_a"  onclick="getHotContentByLike()">
+                        <i class="fa fa-search fa-2x"></i>
+                    </a>
+                    <div class="search_more">
+
+                    </div>
+                </div>
+            </div>
+            <div class="navigation_right">
+                <div class="navigation_right_parent">
+                    <div class="title">
+                        <div class="icon"></div>
+                        <i class="fa fa-home fa-2x"></i> 首页
+                    </div>
+                    <div class="navigation_right_log">
+                        <div style="cursor: pointer;">注册</div>
+                        <div>|</div>
+                        <div style="cursor: pointer;">登录</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="main">
+    <div class="main_left_parent">
+        <div class="main_left1">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item active">
+                                微博系统
+                            </a>
+                            <a th:href="@{/user/personalInfo(loginname=${loginname})}"+ target="ice" class="list-group-item">个人信息</a>
+                            <a th:href="@{/weibo/success(loginname=${loginname})}" target="ice" class="list-group-item">微博信息</a>
+                            <a th:href="@{/comments/success(loginname=${loginname})}" target="ice" class="list-group-item">评论信息</a>
+                            <a th:href="@{/label/success(loginname=${loginname})}" target="ice" class="list-group-item">标签维护</a>
+                            <a th:href="@{/notice/success(loginname=${loginname})}" target="ice" class="list-group-item">公告信息</a>
+                            <a th:if="${check}" th:href="@{/permissions/success(loginname=${loginname})}" target="ice" class="list-group-item">权限管理</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <iframe src="" frameborder="0"
+                                height="1000px" width="100%" name="ice"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="main_passage">
+
+
+    </div>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+    var ice = "http://localhost:8080/";
+    $(function(){
+        getHotContent();
+    });
+
+    function getHotContent() {
+        $.ajax({
+            url: ice+"common/getHotContent",
+            async: true,
+            type:"post",
+            dataType:"json",
+            success: function(result){
+                if(result.code == 200){
+                    let resultdata = result.data;
+                    let spanHtml = "";
+                    let resultHtml = "";
+                    let rankTitleHtml = "";
+                    let rankTitleIdHtml = "";
+                    resultdata.length = resultdata.length < 5 ? resultdata.length : 4;
+                    for (let i = 0; i < resultdata.length; i++) {
+                        resultHtml += "<a href="+resultdata[i].number+">"+resultdata[i].tital+"</a>";
+                    }
+
+                    $(".search_more").html(resultHtml);
+                }
+            }});
+    }
+
+    /**
+     * 模糊搜素热点信息
+     */
+    function getHotContentByLike() {
+        let hotContent = $(".search_input").val();
+        $.ajax({
+            url: ice+"common/getHotContentByLike",
+            async: true,
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            type:"post",
+            dataType:"json",
+            data: {
+                hotContent : hotContent
+            },
+            success: function(result){
+                console.log(result)
+                if(result.code == 200){
+                    let resultdata = result.data;
+                    let spanHtml = "";
+                    let resultHtml = "";
+                    for (let i = 0; i < resultdata.length; i++) {
+                        resultHtml += "<a href="+resultdata[i].number+">"+resultdata[i].tital+"</a>";
+                    }
+                    $(".search_more").html(resultHtml);
+                }
+            }});
+    }
+
+</script>
+<style>
+    .main_left1 {
+        /* background-color: red; */
+        width: 100%;
+        height: 470px;
+        font-size: 18px;
+        position: fixed;
+        top: 67px;
+    }
+</style>
+</html>

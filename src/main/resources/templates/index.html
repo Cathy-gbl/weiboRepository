@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -49,11 +49,11 @@
 <!--                                <i class="fa fa-gamepad fa-2x"-->
 <!--                                    aria-hidden="true"></i> 游戏-->
 <!--                            </div>-->
-<!--                            <div class="navigation_right_log">-->
-<!--                                <div style="cursor: pointer;">注册</div>-->
-<!--                                <div>|</div>-->
-<!--                                <div style="cursor: pointer;">登录</div>-->
-<!--                            </div>-->
+                            <div class="navigation_right_log">
+                                <div style="cursor: pointer;">注册</div>
+                                <div>|</div>
+                                <div style="cursor: pointer;">登录</div>
+                            </div>
                         </div>
 
                     </div>
@@ -112,18 +112,17 @@
             <div class="main_right">
                 <div class="log-box">
                     <div class="log_parent">
-                        <form action="" method="post">
+                        <form action="/user/login" method="post">
                             <div class="log">
                                 <div class="log_head">
                                     <div class="log_id">账号登录</div>
-                                    <div class="log_safe">安全登录</div>
                                 </div>
                                 <div class="log_body">
                                     <div class="username">
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" id="username">
                                     </div>
                                     <div class="password">
-                                        <input type="password" class="input">
+                                        <input type="password" class="input" id="password">
                                     </div>
                                     <div class="passwd">
                                         <div class="passwd_remmenber">
@@ -134,8 +133,8 @@
                                             <span>忘记密码</span>
                                         </div>
                                     </div>
-                                    <div class="log_submit">
-                                        <span>登录</span>
+                                    <div class="log_submit" onclick="login()">
+                                        <span >登录</span>
                                     </div>
                                 </div>
                                 <div class="log_foot">
@@ -229,12 +228,36 @@
 
     <script src="js/jquery-1.11.1.min.js"></script>
 
-    <script>
+    <script language="JavaScript" type="text/javascript">
 
         var ice = "http://localhost:8080/";
         $(function(){
             getHotContent();
         });
+
+        function login() {
+            let username = $("#username").val();
+            let password = $("#password").val();
+            $.ajax({
+                url: ice+"user/login",
+                async: true,
+                type:"post",
+                dataType:"json",
+                data:{
+                    username:username,
+                    password:password
+                },
+                success: function(result){
+                    if(result.code == 200){
+                        window.location.href="user/success?loginname="+username;
+                    }else {
+                        alert(result.msg);
+                    }
+
+
+                }});
+
+        }
 
         /**
          * 查询全部的热点信息

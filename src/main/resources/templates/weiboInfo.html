@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+    <title>微博信息维护</title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet"
+          href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+             th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script type="text/javascript"   th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="main">
+    <div class="main_left_parent">
+        <div class="main_left1">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="labelId" class="col-sm-1 control-label">话题:</label>
+                    <div class="col-sm-5">
+                        <select id="labelId" name="labelId" class="selectpicker show-tick form-control">
+                        </select>
+                    </div>
+                    <label for="titleId" class="col-sm-1 control-label">标题:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="titleId"
+                               name="titleId">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="weiboContent" class="col-sm-1 control-label">内容:</label>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" rows="3" name="weiboContent" id="weiboContent"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-primary" onclick="submit()" style="float:right">提交</button>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" th:value="${loginname}" id="loginname">
+<!--            <div th:each="contents, commentsStat:${comments}"></div>-->
+            <table class="table table-striped" style="margin:auto;">
+                <thead>
+                    <tr>
+                        <td width='40px'>序号</td>
+                        <td width='200px'>标题</td>
+                        <td width='40px'>作者</td>
+                        <td width='150px'>时间</td>
+                        <td width='120px'>操作</td>
+                    </tr>
+                </thead>
+                <tbody id="weibotbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+    var ice = "http://localhost:8080/";
+    $(function(){
+        getWeiBoInfoByLoginname();
+        getAllLabel();
+    });
+
+    function submit(){
+        let weiboContent = $("#weiboContent").val();
+        let titleId = $("#titleId").val();
+        let labelId = $("#labelId").val();
+        let loginname = $("#loginname").val();
+        if(weiboContent == null){
+            alert("发布内容不能为空！");
+            return;
+        }
+        $.ajax({
+            url: ice+"weibo/insert",
+            async: true,
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            type:"post",
+            dataType:"json",
+            data: {
+                content : weiboContent,
+                loginname : loginname,
+                tital:titleId,
+                labelname:labelId
+            },
+            success: function(result){
+                if(result.code == 200){
+                    alert("添加成功");
+                    getWeiBoInfoByLoginname();
+                }else{
+                    alert(result.msg);
+                }
+            }});
+    }
+
+    function getAllLabel() {
+        $.ajax({
+            url: ice+"weibo/getAllLabel",
+            async: true,
+            type:"post",
+            dataType:"json",
+            success: function(result){
+                if(result.code == 200){
+                    let results = result.data;
+                    console.log(results);
+                    let tableHtml = "<option>--请选择--</option>";
+                    for (let i = 0; i < results.length; i++) {
+                        tableHtml += "<option value="+results[i].id+">"+results[i].labelname+"</option>";
+                    }
+                    $("#labelId").html(tableHtml);
+                }
+            }});
+    }
+
+    function queryWeibo(numbers){
+        window.location.href=ice+"common/hotContentXq?params="+numbers;
+    }
+
+    function deletwWeiBo(numbers){
+
+        $.ajax({
+            url: ice+"weibo/delete?number="+numbers,
+            async: true,
+            type:"get",
+            dataType:"json",
+            success: function(result){
+                if(result.code == 200){
+                    alert("删除成功！");
+                    getWeiBoInfoByLoginname();
+                }else{
+                    alert(result.msg);
+                }
+            }});
+    }
+
+    function getWeiBoInfoByLoginname() {
+        let loginname = $("#loginname").val();
+        $.ajax({
+            url: ice+"weibo/getWeiBoInfoByLoginname",
+            async: true,
+            type:"post",
+            dataType:"json",
+            data:{
+              loginname : loginname
+            },
+            success: function(result){
+                if(result.code == 200){
+                    let results = result.data;
+                    console.log(results);
+                    let tableHtml = "";
+                    for (let i = 0; i < results.length; i++) {
+                        let date = new Date(results[i].createDate);
+                        let resultNumber = results[i].number;
+                        let labelname = results[i].labelname == null ? "" :results[i].labelname;
+                        let title = "#" + labelname +" "+ results[i].tital;
+                        tableHtml += "<tr>" +
+                            "<td>"+(i+1)+"</td>" +
+                            "<td><a href='/common/hotContentXq?params="+resultNumber+"'>"+title.substring(0,16)+"</a></td>" +
+                            "<td>"+results[i].username+"</td>" +
+                            "<td>"+date.Format('yyyy-MM-dd hh:mm:ss')+"</td>" +
+                            "<td>" +
+                                "<button class='btn btn-default' onclick=\"queryWeibo('"+resultNumber+"')\">查看</button>\n" +
+                                "<button class='btn btn-default' onclick=\"deletwWeiBo('"+resultNumber+"')\">删除</button>" +
+                                // "<a href='/weibo/deleteWeibo?params="+results[i].number+"'></a>" +
+                            "</td>" +
+                            "</tr>"
+                    }
+                    $("#weibotbody").html(tableHtml);
+                }
+            }});
+    }
+
+    Date.prototype.Format = function (fmt) { // author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, // 月份
+            "d+": this.getDate(), // 日
+            "h+": this.getHours(), // 小时
+            "m+": this.getMinutes(), // 分
+            "s+": this.getSeconds(), // 秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+            "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+</script>
+<style>
+    .main_left1 {
+        /* background-color: red; */
+        width: 100%;
+        height: 470px;
+        font-size: 18px;
+        position: fixed;
+        top: 67px;
+    }
+</style>
+</html>

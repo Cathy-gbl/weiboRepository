@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+    <title>用户权限管理</title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet"
+          href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script type="text/javascript"   th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="main">
+    <div class="main_left_parent">
+        <div class="main_left1">
+            <input type="hidden" th:value="${loginname}" id="loginname">
+            <!--            <div th:each="contents, commentsStat:${comments}"></div>-->
+            <table class="table table-striped" style="margin:auto;">
+                <thead>
+                <tr>
+                    <td width='40px'>序号</td>
+                    <td width='100px'>登陆账号</td>
+                    <td width='100px'>用户名称</td>
+                    <td width='100px'>是否是管理员</td>
+                    <td width='120px'>操作</td>
+                </tr>
+                </thead>
+                <tbody id="permissionsTbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+    var ice = "http://localhost:8080/";
+    $(function(){
+        getAllUser();
+    });
+
+    function getAllUser() {
+        $.ajax({
+            url: ice+"permissions/getAllUser",
+            async: true,
+            type:"post",
+            dataType:"json",
+            success: function(result){
+                if(result.code == 200){
+                    let results = result.data;
+                    console.log(results);
+                    let tableHtml = "";
+                    for (let i = 0; i < results.length; i++) {
+                        let permissions = results[i].permissions != '1' ? "否":"是" ;
+
+
+                        tableHtml += "<tr>" +
+                            "<td>"+(i+1)+"</td>" +
+                            "<td>"+results[i].loginname+"</td>" +
+                            "<td>"+results[i].username+"</td>"+
+                            "<td>"+permissions+"</td>";
+                            if(results[i].permissions == '1'){
+                                tableHtml += "<td><button class='btn btn-default' onclick=\"setPermissions('"+results[i].loginname+"','N')\">取消管理员</button></td></tr>";
+                            }else {
+                                tableHtml += "<td><button class='btn btn-default' onclick=\"setPermissions('"+results[i].loginname+"','Y')\">设置管理员</button></td></tr>";
+                            }
+
+                    }
+                    $("#permissionsTbody").html(tableHtml);
+                }
+            }});
+    }
+
+    function setPermissions(loginname,flag){
+        $.ajax({
+            url: ice+"permissions/setPermissions?loginname="+loginname+"&flag="+flag,
+            async: true,
+            type:"get",
+            dataType:"json",
+            success: function(result){
+                if(result.code == 200){
+                    alert("设置成功!");
+                    getAllUser();
+                }else{
+                    alert(result.msg);
+                }
+            }});
+    }
+</script>
+<style>
+    .main_left1 {
+        /* background-color: red; */
+        width: 100%;
+        height: 470px;
+        font-size: 18px;
+        position: fixed;
+        top: 67px;
+    }
+</style>
+</html>

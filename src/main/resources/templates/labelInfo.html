@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+    <title>标签维护</title>
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet"
+          href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+             th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script type="text/javascript"   th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="main">
+    <div class="main_left_parent">
+        <div class="main_left1">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="loginname" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <input type="hidden" class="form-control" id="loginname"
+                               name="loginname" th:value="${loginname}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="labelInfo" class="col-sm-2 control-label">新建标签:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="labelInfo"
+                               name="labelInfo">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-primary" onclick="submit()">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+    var ice = "http://localhost:8080/";
+    function submit() {
+        let labelInfo = $("#labelInfo").val();
+        let loginname = $("#loginname").val();
+        if(labelInfo == null){
+            alert("标签不能为空！");
+            return;
+        }
+        $.ajax({
+            url: ice+"label/insert",
+            async: true,
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            type:"post",
+            dataType:"json",
+            data: {
+                labelname : labelInfo,
+                loginname : loginname
+            },
+            success: function(result){
+                if(result.code == 200){
+                    alert("添加成功");
+                }else{
+                    alert(result.msg);
+                }
+            }});
+    }
+</script>
+<style>
+    .main_left1 {
+        /* background-color: red; */
+        width: 100%;
+        height: 470px;
+        font-size: 18px;
+        position: fixed;
+        top: 67px;
+    }
+</style>
+</html>
