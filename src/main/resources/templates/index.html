@@ -82,7 +82,6 @@
             <div class="main_passage">
                 <div class="main_passage_img">
                     <div class="left">
-                        <!-- <img src="./image/left/2.jpg" alt=""> -->
                     </div>
                     <div class="top">
                         <img
@@ -96,18 +95,11 @@
                     </div>
                 </div>
                 <div class="main_list">
-                    <!-- <img src="./image/main.png" alt=""> -->
-                    <div class="main_list_msg">
-<!--                        <div class="pic">-->
-<!--                            <img src="./image/hj.gif" alt="">-->
-<!--                        </div>-->
+                    <div class="main_list1">
                         <div id="hotContentXq">
-<!--                            <span ></span>-->
                         </div>
-                        <div class="msg_box"></div>
                     </div>
                 </div>
-
             </div>
             <div class="main_right">
                 <div class="log-box">
@@ -161,63 +153,8 @@
                 </div>
                 <div class="rank">
                     <div class="rank_title">微博热门话题</div>
-                    <!-- <div><img src="./image/rank.png" alt=""></div> -->
-<!--                    <div>-->
-<!--                        <div class="rank_pic"></div>-->
-<!--                        <a href="">#华为发布会#</a>-->
-<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <div class="rank_pic"></div>-->
-<!--                        <a href="">#华为发布会#</a>-->
-<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <div class="rank_pic"></div>-->
-<!--                        <a href="">#华为发布会#</a>-->
-<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <div class="rank_pic"></div>-->
-<!--                        <a href="">#华为发布会#</a>-->
-<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <div class="rank_pic"></div>-->
-<!--                        <a href="">#华为发布会#</a>-->
-<!--                        <div class="rank_txt">2.5亿阅读 1.2万讨论</div>-->
-<!--                    </div>-->
-<!--                    <div class="rank_more">查看更多></div>-->
-                </div>
-                <div class="rank">
-                    <div class="rank_title" id="rank_title">微博实时热点</div>
-                    <!-- <div><img src="./image/rank.png" alt=""></div> -->
-<!--                    <div>-->
-<!--                        <div class="rank_hot_pic"></div>-->
-<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
-<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <div class="rank_hot_pic"></div>-->
-<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
-<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
-<!--                    </div><div>-->
-<!--                        <div class="rank_hot_pic"></div>-->
-<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
-<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
-<!--                    </div><div>-->
-<!--                        <div class="rank_hot_pic"></div>-->
-<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
-<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
-<!--                    </div><div>-->
-<!--                        <div class="rank_hot_pic"></div>-->
-<!--                        <a href="">#90后成外卖最大消费群体# ​</a>-->
-<!--                        <div class="rank_txt">如果想点外卖，相比炸鸡、粉面类食物</div>-->
-<!--                    </div>-->
-<!--                    <div class="rank_more">查看更多></div>-->
                 </div>
             </div>
-        </div>
         <div class="gotop fixed">
             <a class="gotop_a" href="#top" target="_self"></a>
         </div>
@@ -275,26 +212,20 @@
                         let resultHtml = "";
                         let rankTitleHtml = "";
                         let rankTitleIdHtml = "";
-                        resultdata.length = resultdata.length < 5 ? resultdata.length : 4;
                         for (let i = 0; i < resultdata.length; i++) {
-                            resultHtml += "<a href="+resultdata[i].number+">"+resultdata[i].tital+"</a>";
-                            spanHtml += "<div><h2><a href='/common/hotContentXq?params="+resultdata[i].number+"'>"+resultdata[i].tital+"</a></h2></div>";
+                            resultHtml += "<h1><a href="+resultdata[i].number+">#"+resultdata[i].tital+"</a></h1>";
+                            spanHtml += "<div><h1><a href='/common/hotContentXq?params="+resultdata[i].number+"'>#"+resultdata[i].tital+"</a></h1></div>";
                             rankTitleHtml += "<div><div class='rank_pic'></div>"+
                                 "<a href='/common/hotContentXq?params="+resultdata[i].number+"'>#"+resultdata[i].tital.substring(0,4)+"#</a>"+
                                 "<div class='rank_txt'>"+resultdata[i].tital+"</div>"+
                             "</div>";
-                            rankTitleIdHtml += "<div>"+
-                                "<div class='rank_hot_pic'></div>"+
-                                "<a href='/common/hotContentXq?params="+resultdata[i].number+"'>#"+resultdata[i].tital.substring(0,6)+"#</a>"+
-                                "<div class='rank_txt'>"+resultdata[i].tital+"</div>"+
-                            "</div>";
+
                         }
                         // rankTitleHtml+="<div class='rank_more'>查看更多></div>";
                         // rankTitleIdHtml+="<div class='rank_more'>查看更多></div>";
                         $(".search_more").html(resultHtml);
                         $("#hotContentXq").html(spanHtml);
                         $(".rank_title").html(rankTitleHtml);
-                        $("#rank_title").html(rankTitleIdHtml);
                     }
                 }});
         }
@@ -320,9 +251,9 @@
                         let spanHtml = "";
                         let resultHtml = "";
                         for (let i = 0; i < resultdata.length; i++) {
-                            resultHtml += "<a href="+resultdata[i].number+">"+resultdata[i].tital+"</a>";
+                            resultHtml += "<h1><a href="+resultdata[i].number+">#"+resultdata[i].tital+"</a></h1>";
                             console.log(resultHtml)
-                            spanHtml += "<div><a href='/common/hotContentXq?params="+resultdata[i].number+"'>"+resultdata[i].tital+"</a></div>";
+                            spanHtml += "<div><h1><a href='/common/hotContentXq?params="+resultdata[i].number+"'>#"+resultdata[i].tital+"</a></h1></div>";
                         }
                         $(".search_more").html(resultHtml);
                         $("#hotContentXq").html(spanHtml);
@@ -333,10 +264,14 @@
     </script>
     <style>
         #hotContentXq a {
-            font-size: 14px;
+            font-size: 18px;
             color: black;
             text-decoration: none;
             line-height: 1.5;
+        }
+
+        .main_list1 {
+            background-color: #f2f2f5;
         }
     </style>
 </html>

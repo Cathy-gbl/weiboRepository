@@ -20,6 +20,11 @@ public class CommonOptionController extends BaseApiService {
     @Autowired
     private CommonOptionService commonOptionService;
 
+    @GetMapping("/index")
+    public String index(){
+        return "index";
+    }
+
     @PostMapping("/getHotContent")
     @ResponseBody
     public BaseResponse getHotContent() {
@@ -38,9 +43,11 @@ public class CommonOptionController extends BaseApiService {
     }
 
     @GetMapping("/hotContentXq")
-    public String hotContentXq(Model model, @RequestParam(value = "params", required = false) String params) {
+    public String hotContentXq(Model model, @RequestParam(value = "params", required = false) String params,
+                               @RequestParam(value = "loginname", required = false) String loginname) {
         List<CommonOptionEntity> hotContentXqByNumber = commonOptionService.getHotContentXqByNumber(params);
         for (CommonOptionEntity commonOptionEntity : hotContentXqByNumber) {
+            model.addAttribute("number",commonOptionEntity.getNumber());
             model.addAttribute("tital",commonOptionEntity.getTital());
             model.addAttribute("username",commonOptionEntity.getUsername());
             model.addAttribute("createDate",commonOptionEntity.getCreateDate());
@@ -48,20 +55,17 @@ public class CommonOptionController extends BaseApiService {
         }
         List<CommonOptionEntity> hotCommentsXqByNumber = commonOptionService.getHotCommentsXqByNumber(params);
         model.addAttribute("comments",hotCommentsXqByNumber);
+
+        if(loginname==null){
+
+            model.addAttribute("check",false);
+        }else {
+            model.addAttribute("loginname",loginname);
+            model.addAttribute("check",true);
+        }
+
         return "templates";
     }
-
-//    @PostMapping("/gethotContentXq")
-//    public BaseResponse gethotContentXq() String params){
-//
-//        return setResultSuccess(hotContentXqByNumber);
-//    }
-//
-//    @PostMapping("/gethotCommentsXq")
-//    public BaseResponse gethotCommentsXq(@RequestParam(value = "params", required = false) String params){
-//        List<CommonOptionEntity> hotCommentsXqByNumber = commonOptionService.getHotCommentsXqByNumber(params);
-//        return setResultSuccess(hotCommentsXqByNumber);
-//    }
 
 
 }

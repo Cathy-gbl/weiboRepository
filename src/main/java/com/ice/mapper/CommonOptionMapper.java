@@ -30,15 +30,16 @@ public interface CommonOptionMapper {
             "a.hot_number as number,a.hot_content as content,a.hot_tital as tital, "+
             "a.create_date as createDate,b.username "+
             "FROM hot_content a "+
-            "LEFT JOIN USER B ON A.user_id = B.id "+
-            "WHERE a.is_flag = '1' and a.hot_number = #{number}"
+            "LEFT JOIN USER B ON A.user_id = B.loginname "+
+            "WHERE a.is_flag = '1' and a.hot_number = #{number} "
     )
     List<CommonOptionEntity> getHotContentXq(String number);
 
     @Select(
             "SELECT a.content,b.username,a.comment_time as createDate FROM hot_comments a "+
-            "LEFT JOIN USER B ON A.commentator = b.id "+
-            "WHERE a.hot_number = #{number} AND a.iS_FLAG = '1'"
+            "LEFT JOIN USER B ON A.commentator = b.loginname "+
+            "WHERE a.hot_number = #{number} AND a.iS_FLAG = '1' " +
+             "order by a.comment_time asc"
     )
     List<CommonOptionEntity> getHotCommentsXq(String number);
 }

@@ -126,7 +126,8 @@
     }
 
     function queryWeibo(numbers){
-        window.location.href=ice+"common/hotContentXq?params="+numbers;
+        let loginname = $("#loginname").val();
+        window.location.href=ice+"common/hotContentXq?params="+numbers+"&loginname="+loginname;
     }
 
     function deletwWeiBo(numbers){
@@ -168,7 +169,7 @@
                         let title = "#" + labelname +" "+ results[i].tital;
                         tableHtml += "<tr>" +
                             "<td>"+(i+1)+"</td>" +
-                            "<td><a href='/common/hotContentXq?params="+resultNumber+"'>"+title.substring(0,16)+"</a></td>" +
+                            "<td><a href='/common/hotContentXq?params="+resultNumber+"&loginname="+loginname+"'>"+title.substring(0,16)+"</a></td>" +
                             "<td>"+results[i].username+"</td>" +
                             "<td>"+date.Format('yyyy-MM-dd hh:mm:ss')+"</td>" +
                             "<td>" +

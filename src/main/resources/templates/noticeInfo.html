@@ -20,10 +20,10 @@
 <div class="main">
     <div class="main_left_parent">
         <div class="main_left1">
-            <div th:if="${check}">
+            <div th:if="${check}" class="form-horizontal">
                 <div class="form-group" >
-                    <label for="noticeContent" class="control-label">发布公告:</label>
-                    <div class="col-sm-12">
+                    <label for="noticeContent" class="col-sm-1 control-label">发布公告</label>
+                    <div class="col-sm-11">
                         <textarea class="form-control" rows="3" name="noticeContent" id="noticeContent"></textarea>
                     </div>
                 </div>

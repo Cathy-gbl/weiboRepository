@@ -1,35 +1,153 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title class="tital" th:text="${tital}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+    <title>微博详情</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet"
           href="../styles/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script type="text/javascript"   th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </head>
+
 <body>
-<div>
-    <div class="title" th:text="${tital}"></div>
-    <div class="body">
-        <div class="content" th:text="${content}"></div>
-        <div class="username" th:text="${username}"></div>
-        <div class="createDate" th:text="${createDate}"></div>
-    </div>
-    <div class="comments" th:each="contents, commentsStat:${comments}">
-        <div>
-            <span th:text="${commentsStat.index}"></span>
-            <span th:text="${contents.content}"></span><br>
-            <span th:text="${contents.username}"></span>
-            <span th:text="${contents.createDate}"></span><br>
+<div class="main">
+    <div class="main_left_parent">
+        <div class="main_left1">
+            <div class="form-horizontal col-sm-8">
+
+                <input type="hidden" th:value="${loginname}" id="loginname">
+                <input type="hidden" th:value="${number}" id="number">
+
+                <div >
+                    <h1><p class="text-center" th:text="${tital}"></p></h1>
+                </div>
+                <div class="text-right" style="font-size: 14px">
+                    作者：<span class="text-left" th:text="${username}" ></span><br>
+                </div>
+                <div class="text-right" style="font-size: 12px">
+                    发表日期：<span class="text-left" th:text="${createDate}"></span>
+                </div>
+                <div class="text-center">
+                    <p class="text-center" th:text="${content}"></p>
+                </div>
+            </div>
+            <div class="col-sm-8" style="font-size: 16px;margin-top: 60px;background-color:	#F0F0F0;">
+                <div class="comments" th:each="contents, commentsStat:${comments}">
+                    <div>
+                        <p><span th:text="(${commentsStat.index}+1)+'楼'"></span><span th:text="${contents.username}"></span></p>
+                        <p><span th:text="${contents.content}"></span></p>
+                        <p>评论时间：<span th:text="${contents.createDate}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal col-sm-8" th:if="${check}" style="margin-top: 20px;">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" rows="3" name="weiboComments" id="weiboComments" placeholder="请发表评论"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-primary" onclick="submit()" style="float:right">提交</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 </body>
 
-<script>
+<script th:inline="javascript">
+    var ice = "http://localhost:8080/";
+    // $(function(){
+    //     getWeiBoInfoByLoginname();
+    //     getAllLabel();
+    // });
 
+    function submit(){
+        var request=GetRequest();
+        let weiboComments = $("#weiboComments").val();
+        let number = $("#number").val();
+        let loginname = request["loginname"];
+        console.log('>>>>>>>>>>>>>>>>'+loginname);
+        if(weiboComments == null){
+            alert("发布内容不能为空！");
+            return;
+        }
+        $.ajax({
+            url: ice+"comments/insert",
+            async: true,
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            type:"post",
+            dataType:"json",
+            data: {
+                content : weiboComments,
+                loginname : loginname,
+                number:number
+            },
+            success: function(result){
+                if(result.code == 200){
+                    alert("添加成功");
+
+                }else{
+                    alert(result.msg);
+                }
+            }});
+    }
+
+    Date.prototype.Format = function (fmt) { // author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, // 月份
+            "d+": this.getDate(), // 日
+            "h+": this.getHours(), // 小时
+            "m+": this.getMinutes(), // 分
+            "s+": this.getSeconds(), // 秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+            "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    function GetRequest() {
+
+        var url = window.location.href;         /*search 属性是一个可读可写的字符串，
+                                         可设置或返回当前 URL 的查询部分（问号 ? 之后的部分）。*/
+        console.log("url"+url);
+        var theRequest=new Array();        //定义一个数组
+
+        if (url.indexOf("?") != -1) {      /*indexOf() 方法可返回某个指定的字符
+                                            串值在字符串中首次出现的位置。-1代表不存在*/
+
+            var str = url.substr(1);       //截取出字符串
+            strs = str.split("&");         //分割成为数组
+            for(var i = 0; i < strs.length; i ++) {
+                //将传递的参数组合key=>val 形式
+                theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
 </script>
+<style>
+    .main_left1 {
+        /* background-color: red; */
+        width: 100%;
+        height: 470px;
+        font-size: 18px;
+        position: fixed;
+        top: 67px;
+    }
+</style>
 </html>

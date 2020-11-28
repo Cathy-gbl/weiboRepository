@@ -16,6 +16,16 @@ public class CommentsEntity {
 
     private String tital;
 
+    private String isFlag;
+
+    public String getIsFlag() {
+        return isFlag;
+    }
+
+    public void setIsFlag(String isFlag) {
+        this.isFlag = isFlag;
+    }
+
     public String getId() {
         return id;
     }

@@ -7,6 +7,7 @@ import com.ice.utils.BaseApiService;
 import com.ice.utils.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,4 +43,18 @@ public class CommentsController extends BaseApiService {
         }
         return setResultError("网络异常，删除失败，请稍后再试！");
     }
+
+    @RequestMapping("/insert")
+    @ResponseBody
+    @Transactional
+    public BaseResponse insert(@RequestParam(value = "content", required = false) String content,
+                               @RequestParam(value = "number", required = false) String number,
+                               @RequestParam(value = "loginname", required = false) String loginname){
+        boolean insert = commentsSerive.insert(number,content,loginname);
+        if(insert){
+            return setResultSuccess();
+        }
+        return setResultError("网络异常，请稍后再试！");
+    }
+
 }

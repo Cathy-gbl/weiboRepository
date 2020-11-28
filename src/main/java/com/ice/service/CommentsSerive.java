@@ -10,4 +10,6 @@ public interface CommentsSerive {
     public List<CommentsEntity> getCommentsInfoByLoginName(String loginname);
 
     public boolean delete(String number);
+
+    public boolean insert(String number,String content,String loginname);
 }
